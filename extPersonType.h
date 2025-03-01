@@ -15,39 +15,8 @@
 
 class extPersonType {
 public:
-    enum class Relationship {Family_Member, Friend, Business_Associate, Academic_Associate, Acquaintance};
-
-// private:
-//     // Private member of the Relationship class.
-//     Relationship relationshipType; // Member variable of type Relationship.
-
-public:
-    // Constructor for the Relationship class.
-    // explicit extPersonType(Relationship type): relationshipType(type) {}
-
-    void setRelationship(Relationship newRelationship) {
-        relationshipType = newRelationship;
-    }
-
-    [[nodiscard]] Relationship getRelationship() const {
-        return relationshipType;
-    }
-
-    // Convert the Relationship type to a string for easy access.
-    [[nodiscard]] std::string getRelationshipString() const {
-        switch (relationshipType) {
-            case Relationship::Family_Member: return "Family_Member";
-            case Relationship::Friend: return "Friend";
-            case Relationship::Business_Associate: return "Business_Associate";
-            case Relationship::Academic_Associate: return "Academic_Associate";
-            case Relationship::Acquaintance: return "Acquaintance";
-            default: return "Unknown";
-        }
-    }
-
     void print() const {
         std::cout << firstName << " " << lastName << std::endl;
-        //std::cout << categoryToString(category.)
     }
 
     void setName(std::string first, std::string last) {
@@ -71,11 +40,43 @@ public:
         return address;
     }
 
+    void setPhoneNumber(const int number) {
+        telephone = number;
+    }
 
+    int getPhoneNumber() const {
+        return telephone;
+    }
 
-    // [[nodiscard]] Relationship getCategory() const {
-    //     return category;
-    // }
+    void setEmail(const std::string& email) {
+        emailAddress = email;
+    }
+
+    std::string getEmail() const {
+        return emailAddress;
+    }
+
+    enum class Relationship {Family_Member, Friend, Business_Associate, Academic_Associate, Acquaintance};
+
+    void setRelationship(Relationship newRelationship) {
+        relationshipType = newRelationship;
+    }
+
+    [[nodiscard]] Relationship getRelationship() const {
+        return relationshipType;
+    }
+
+    // Convert the Relationship type to a string for easy access.
+    [[nodiscard]] std::string getRelationshipString() const {
+        switch (relationshipType) {
+            case Relationship::Family_Member: return "Family_Member";
+            case Relationship::Friend: return "Friend";
+            case Relationship::Business_Associate: return "Business_Associate";
+            case Relationship::Academic_Associate: return "Academic_Associate";
+            case Relationship::Acquaintance: return "Acquaintance";
+            default: return "Unknown";
+        }
+    }
 
     // Default Constructor
     extPersonType() {
@@ -84,16 +85,21 @@ public:
         birthDate = dateType();
         address = addressType();
         relationshipType = Relationship::Acquaintance;
+        telephone = 0000000000;
+        emailAddress = "--";
     }
 
     // Constructor with parameters
     extPersonType(std::string first, std::string last, int month, int day, int year,
-        std::string street, std::string city, std::string state, int zip, Relationship type) {
+        std::string street, std::string city, std::string state, int zip, Relationship type,
+        int phone, std::string email) {
         firstName = first;
         lastName = last;
         birthDate.setDate(month, day, year);
         address = addressType(street, city, state, zip);
         relationshipType = type;
+        telephone = phone;
+        emailAddress = email;
     }
 
 private:
@@ -102,5 +108,7 @@ private:
     dateType birthDate;
     addressType address;
     Relationship relationshipType;
+    int telephone;
+    std::string emailAddress;
 };
 #endif //EXTPERSONTYPE_H

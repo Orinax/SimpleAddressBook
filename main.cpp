@@ -24,20 +24,23 @@ int main() {
     std::string city = "Buffalo";
     std::string state = "New York";
     int zip = 12345;
+    int phone = 1234567890;
+    std::string email = "demo@email.com";
 
     // Parameterized Class Construction
     extPersonType person = extPersonType(fname, lname, 12, 5, 1989,
-        street, city, state, zip, extPersonType::Relationship::Friend);
+        street, city, state, zip, extPersonType::Relationship::Friend, phone, email);
     person.print();
     person.printBirthDate();
-    std::cout << person.getAddress() << std::endl;
-    std::cout << person.getRelationshipString() << std::endl;
+    std::cout << person.getAddress() << "\n" << person.getRelationshipString() << "\n";
+    std::cout << person.getPhoneNumber() << "\n" << person.getEmail() << std::endl;
 
     // Default Class Construction
+    std::cout << "\nDefault Person\n";
     extPersonType person2 = extPersonType();
     person2.print();
     person2.printBirthDate();
-    std::cout << person2.getAddress() << std::endl;
-    std::cout << person2.getRelationshipString() << std::endl;
+    std::cout << person2.getAddress() << "\n" << person2.getRelationshipString() << "\n";
+    std::cout << person2.getPhoneNumber() << "\n" << person2.getEmail() << "\n";
     return 0;
 }

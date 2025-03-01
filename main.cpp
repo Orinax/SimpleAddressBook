@@ -2,6 +2,7 @@
 
 #include "addressType.h"
 #include "extPersonType.h"
+#include "orderedListType.h"
 
 // Overloading the << operator to help with printing out addresses.
 std::ostream& operator<<(std::ostream& osObject, const addressType& address) {
@@ -42,5 +43,39 @@ int main() {
     person2.printBirthDate();
     std::cout << person2.getAddress() << "\n" << person2.getRelationshipString() << "\n";
     std::cout << person2.getPhoneNumber() << "\n" << person2.getEmail() << "\n";
+
+    std::cout << "**********" << std::endl;
+
+    orderedListType<int> list1, list2;
+    int num;
+
+    std::cout << "Line 7: Enter numbers ending with -999." << std::endl;
+    std::cin >> num;
+
+    while (num != -999) {
+        list1.insert(num);
+        std::cin >> num;
+    }
+
+    std::cout << std::endl;
+    std::cout << "Line 15: list1: ";
+    list1.print();
+    std::cout << std::endl;
+
+    list2 = list1;
+
+    std::cout << "Line 19: list2: ";
+    list2.print();
+    std::cout << std::endl;
+
+    std::cout << "Line 22: Enter the number to be deleted: ";
+    std::cin >> num;
+    std::cout << std::endl;
+
+    list2.deleteNode(num);
+    std::cout << "Line 26: After deleting " << num << ", list2: " << std::endl;
+    list2.print();
+    std::cout << std::endl;
+
     return 0;
 }

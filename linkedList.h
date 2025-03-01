@@ -57,7 +57,7 @@ private:
 };
 
 
-// Define the linkedList class third. (p. 282-...)
+// Define the linkedList class third. (p. 282-292)
 template <class Type>
 class linkedListType {
 public:
@@ -166,7 +166,7 @@ protected:
     int count; // variable to store the number of elements in the list
 
     nodeType<Type> *first; // pointer to the first node of the list
-    noteType<Type> *last; // pointer to the last node of the list
+    nodeType<Type> *last; // pointer to the last node of the list
 
 private:
     // Function to make a copy of otherList.

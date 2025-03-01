@@ -7,4 +7,5 @@ add_executable(SimpleAddressBook main.cpp
         addressType.h
         extPersonType.h
         dateType.h
-        linkedList.h)
+        linkedList.h
+        orderedListType.h)

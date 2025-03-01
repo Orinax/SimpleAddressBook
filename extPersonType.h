@@ -7,6 +7,7 @@
 #ifndef EXTPERSONTYPE_H
 #define EXTPERSONTYPE_H
 #include <iostream>
+#include <iomanip>
 #include <ostream>
 #include <string>
 
@@ -16,7 +17,14 @@
 class extPersonType {
 public:
     void print() const {
-        std::cout << firstName << " " << lastName << std::endl;
+        std::cout << "############### Contact Info ###############" << std::endl;
+        std::cout << std::right << std::setw(14) << "Name: " << firstName << " " << lastName << std::endl;
+        std::cout << std::right << std::setw(14) << "Telephone: " << telephone << std::endl;
+        std::cout << std::right << std::setw(14) << "Email: " << emailAddress << std::endl;
+        std::cout << std::right << std::setw(14) << "Birthday: ";
+        birthDate.printDate();
+        std::cout << "Relationship: " << getRelationshipString() << std::endl;
+        std::cout << std::right << std::setw(14) << "Address: " << address << std::endl;
     }
 
     void setName(std::string first, std::string last) {
@@ -62,6 +70,18 @@ public:
         relationshipType = newRelationship;
     }
 
+    // Set the relationship with a string input
+    bool setRelationship(const std::string &relationshipString) {
+        if (relationshipString == "Family_Member") relationshipType = Relationship::Family_Member;
+        else if (relationshipString == "Friend") relationshipType = Relationship::Friend;
+        else if (relationshipString == "Business_Associate") relationshipType = Relationship::Business_Associate;
+        else if (relationshipString == "Academic_Associate") relationshipType = Relationship::Academic_Associate;
+        else if (relationshipString == "Acquaintance") relationshipType =Relationship::Acquaintance;
+        else return false;
+
+        return true;
+    }
+
     [[nodiscard]] Relationship getRelationship() const {
         return relationshipType;
     }
@@ -90,14 +110,14 @@ public:
     }
 
     // Constructor with parameters
-    extPersonType(std::string first, std::string last, int month, int day, int year,
-        std::string street, std::string city, std::string state, int zip, Relationship type,
+    extPersonType(std::string first, std::string last, int day, int month, int year,
+        std::string street, std::string city, std::string state, int zip, std::string relationship,
         int phone, std::string email) {
         firstName = first;
         lastName = last;
-        birthDate.setDate(month, day, year);
+        birthDate.setDate(day, month, year);
         address = addressType(street, city, state, zip);
-        relationshipType = type;
+        setRelationship(relationship);
         telephone = phone;
         emailAddress = email;
     }

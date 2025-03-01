@@ -11,9 +11,9 @@
 
 class dateType {
 public:
-    void setDate(int month, int day, int year) {
-        dMonth = month;
+    void setDate(int day, int month, int year) {
         dDay = day;
+        dMonth = month;
         dYear = year;
     }
 
@@ -30,17 +30,17 @@ public:
     }
 
     void printDate() const {
-        std::cout << dMonth << "-" << dDay << "-" << dYear << std::endl;
+        std::cout << dDay << "-" << dMonth << "-" << dYear << std::endl;
     }
 
     // Default constructor
-    dateType(int month = 1, int day = 1, int year = 1900) {
-        setDate(month, day, year);
+    dateType(int day = 1, int month = 1, int year = 1900) {
+        setDate(day, month, year);
     }
 
 private:
-    int dMonth;
     int dDay;
+    int dMonth;
     int dYear;
 };
 #endif //DATETYPE_H

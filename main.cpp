@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 #include "addressType.h"
 #include "extPersonType.h"
@@ -6,76 +7,92 @@
 
 // Overloading the << operator to help with printing out addresses.
 std::ostream& operator<<(std::ostream& osObject, const addressType& address) {
-    osObject << "Street address: " << address.streetAddress << std::endl;
-    osObject << "City: " << address.city << std::endl;
-    osObject << "State: " << address.state << std::endl;
-    osObject << "Zip code: " << address.zipCode << std::endl;
+    osObject << address.streetAddress << std::endl;
+    osObject << std::right << std::setw(14) << " " << address.city << ", " << address.state << std::endl;
+    osObject << std::right << std::setw(14) << " " << address.zipCode << std::endl;
     return osObject;
 }
 
+bool getContactInfo(std::ifstream& infile, extPersonType& extPerson);
+
 
 int main() {
-    addressType address;
-    std::cout << address << std::endl;
 
-    // Sample variables to help with testing.
-    std::string fname = "bob";
-    std::string lname = "bonzo";
-    std::string street = "123 Street";
-    std::string city = "Buffalo";
-    std::string state = "New York";
-    int zip = 12345;
-    int phone = 1234567890;
-    std::string email = "demo@email.com";
+    std::ifstream infile("contactData.txt");
+    if (!infile) {
+        std::cerr << "Error opening file" << std::endl;
+        return 1;
+    }
 
-    // Parameterized Class Construction
-    extPersonType person = extPersonType(fname, lname, 12, 5, 1989,
-        street, city, state, zip, extPersonType::Relationship::Friend, phone, email);
-    person.print();
-    person.printBirthDate();
-    std::cout << person.getAddress() << "\n" << person.getRelationshipString() << "\n";
-    std::cout << person.getPhoneNumber() << "\n" << person.getEmail() << std::endl;
+    extPersonType tempPerson;
+    getContactInfo(infile, tempPerson);
+    infile.close();
+
+    tempPerson.print();
 
     // Default Class Construction
     std::cout << "\nDefault Person\n";
     extPersonType person2 = extPersonType();
     person2.print();
-    person2.printBirthDate();
-    std::cout << person2.getAddress() << "\n" << person2.getRelationshipString() << "\n";
-    std::cout << person2.getPhoneNumber() << "\n" << person2.getEmail() << "\n";
 
-    std::cout << "**********" << std::endl;
+    orderedListType<extPersonType> addressBook;
 
-    orderedListType<int> list1, list2;
-    int num;
+    // std::cout << "**********" << std::endl;
+    //
+    // orderedListType<int> list1, list2;
+    // int num;
+    //
+    // std::cout << "Line 7: Enter numbers ending with -999." << std::endl;
+    // std::cin >> num;
+    //
+    // while (num != -999) {
+    //     list1.insert(num);
+    //     std::cin >> num;
+    // }
+    //
+    // std::cout << std::endl;
+    // std::cout << "Line 15: list1: ";
+    // list1.print();
+    // std::cout << std::endl;
+    //
+    // list2 = list1;
+    //
+    // std::cout << "Line 19: list2: ";
+    // list2.print();
+    // std::cout << std::endl;
+    //
+    // std::cout << "Line 22: Enter the number to be deleted: ";
+    // std::cin >> num;
+    // std::cout << std::endl;
+    //
+    // list2.deleteNode(num);
+    // std::cout << "Line 26: After deleting " << num << ", list2: " << std::endl;
+    // list2.print();
+    // std::cout << std::endl;
+    //
+    return 0;
+}
 
-    std::cout << "Line 7: Enter numbers ending with -999." << std::endl;
-    std::cin >> num;
+bool getContactInfo(std::ifstream& infile, extPersonType& extPerson) {
+    std::string fname, lname, street, city, state, email, relationship;
+    int day, month, year, zip, phone;
 
-    while (num != -999) {
-        list1.insert(num);
-        std::cin >> num;
+    if (!(infile >> fname >> lname >> day >> month >> year)) {
+        return false;
     }
 
-    std::cout << std::endl;
-    std::cout << "Line 15: list1: ";
-    list1.print();
-    std::cout << std::endl;
+    infile.ignore(); // This will ignore the space before a quote
+    if (infile.peek() == '"') {
+        infile.get();
+        std::getline(infile, street, '"');;
+    }
+    else {
+        infile >> street;
+    }
 
-    list2 = list1;
+    infile >> city >> state >> zip >> relationship >> phone >> email;
 
-    std::cout << "Line 19: list2: ";
-    list2.print();
-    std::cout << std::endl;
-
-    std::cout << "Line 22: Enter the number to be deleted: ";
-    std::cin >> num;
-    std::cout << std::endl;
-
-    list2.deleteNode(num);
-    std::cout << "Line 26: After deleting " << num << ", list2: " << std::endl;
-    list2.print();
-    std::cout << std::endl;
-
-    return 0;
+    extPerson = extPersonType(fname, lname, day, month, year, street, city, state,
+        zip, relationship, phone, email);
+    return true;
 }

@@ -33,9 +33,9 @@ public:
 
     // Default constructor
     addressType() {
-        streetAddress = "Test Address";
-        city = "City";
-        state = "State";
+        streetAddress = "--";
+        city = "--";
+        state = "--";
         zipCode = 0;
     }
 

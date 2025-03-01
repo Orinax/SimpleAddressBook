@@ -15,8 +15,39 @@
 
 class extPersonType {
 public:
+    enum class Relationship {Family_Member, Friend, Business_Associate, Academic_Associate, Acquaintance};
+
+// private:
+//     // Private member of the Relationship class.
+//     Relationship relationshipType; // Member variable of type Relationship.
+
+public:
+    // Constructor for the Relationship class.
+    // explicit extPersonType(Relationship type): relationshipType(type) {}
+
+    void setRelationship(Relationship newRelationship) {
+        relationshipType = newRelationship;
+    }
+
+    [[nodiscard]] Relationship getRelationship() const {
+        return relationshipType;
+    }
+
+    // Convert the Relationship type to a string for easy access.
+    [[nodiscard]] std::string getRelationshipString() const {
+        switch (relationshipType) {
+            case Relationship::Family_Member: return "Family_Member";
+            case Relationship::Friend: return "Friend";
+            case Relationship::Business_Associate: return "Business_Associate";
+            case Relationship::Academic_Associate: return "Academic_Associate";
+            case Relationship::Acquaintance: return "Acquaintance";
+            default: return "Unknown";
+        }
+    }
+
     void print() const {
         std::cout << firstName << " " << lastName << std::endl;
+        //std::cout << categoryToString(category.)
     }
 
     void setName(std::string first, std::string last) {
@@ -40,21 +71,29 @@ public:
         return address;
     }
 
+
+
+    // [[nodiscard]] Relationship getCategory() const {
+    //     return category;
+    // }
+
     // Default Constructor
     extPersonType() {
         firstName = "--";
         lastName = "--";
         birthDate = dateType();
         address = addressType();
+        relationshipType = Relationship::Acquaintance;
     }
 
     // Constructor with parameters
     extPersonType(std::string first, std::string last, int month, int day, int year,
-        std::string street, std::string city, std::string state, int zip) {
+        std::string street, std::string city, std::string state, int zip, Relationship type) {
         firstName = first;
         lastName = last;
         birthDate.setDate(month, day, year);
         address = addressType(street, city, state, zip);
+        relationshipType = type;
     }
 
 private:
@@ -62,5 +101,6 @@ private:
     std::string lastName;
     dateType birthDate;
     addressType address;
+    Relationship relationshipType;
 };
 #endif //EXTPERSONTYPE_H

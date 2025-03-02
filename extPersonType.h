@@ -16,6 +16,13 @@
 
 class extPersonType {
 public:
+    const extPersonType& operator=(const extPersonType& otherPerson) {
+        if (this != &otherPerson) {
+            copyPerson(otherPerson);
+        }
+        return *this;
+    }
+
     bool operator==(const extPersonType& other) const {
         return (this->firstName == other.firstName) &&
             (this->lastName == other.lastName) &&
@@ -43,7 +50,7 @@ public:
 
     void setPersonInfo(std::string fname, std::string lname, int day, int month, int year,
         std::string street, std::string city, std::string state, int zip, std::string relationship,
-        int phone, std::string email) {
+        std::string phone, std::string email) {
         setName(fname, lname);
         birthDate.setDate(day, month, year);
         setAddress(street, city, state, zip);
@@ -88,11 +95,11 @@ public:
         return address;
     }
 
-    void setPhoneNumber(const int number) {
+    void setPhoneNumber(const std::string number) {
         telephone = number;
     }
 
-    int getPhoneNumber() const {
+    std::string getPhoneNumber() const {
         return telephone;
     }
 
@@ -138,6 +145,17 @@ public:
         }
     }
 
+    // Copy one extPersonType object to another
+    void copyPerson(const extPersonType &other) {
+        firstName = other.firstName;
+        lastName = other.lastName;
+        birthDate = other.birthDate;
+        address = other.address;
+        relationshipType = other.relationshipType;
+        telephone = other.telephone;
+        emailAddress = other.emailAddress;
+    }
+
     // Default Constructor
     extPersonType() {
         firstName = "";
@@ -145,8 +163,8 @@ public:
         birthDate = dateType();
         address = addressType();
         relationshipType = Relationship::Acquaintance;
-        telephone = 0000000000;
-        emailAddress = "--";
+        telephone = "";
+        emailAddress = "";
     }
 
     // Constructor with parameters
@@ -162,13 +180,18 @@ public:
         emailAddress = email;
     }
 
+    // Copy Constructor
+    extPersonType(const extPersonType &otherPerson) {
+        copyPerson(otherPerson);
+    }
+
 private:
     std::string firstName;
     std::string lastName;
     dateType birthDate;
     addressType address;
     Relationship relationshipType;
-    int telephone;
+    std::string telephone;
     std::string emailAddress;
 };
 #endif //EXTPERSONTYPE_H

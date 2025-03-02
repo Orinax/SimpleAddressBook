@@ -4,6 +4,7 @@
 #include "addressType.h"
 #include "extPersonType.h"
 #include "orderedListType.h"
+#include "personListType.h"
 
 // Overloading the << operator to help with printing out addresses.
 std::ostream& operator<<(std::ostream& osObject, const addressType& address) {
@@ -18,99 +19,112 @@ std::ostream& operator<<(std::ostream& osObject, const extPersonType& personObje
     return osObject;
 }
 
-void getContactInfo(std::ifstream& infile, orderedListType<extPersonType>& addressBook);
+void createContactList(std::ifstream& infile, orderedListType<extPersonType>& addressBook);
 
+void displayMenu();
 
+// Begin main program
 int main() {
+    personListType addressBook;
+    int choice;
+    int month;
+    std::string lastName;
 
     std::ifstream infile("contactData.txt");
-
     if (!infile) {
         std::cerr << "Error opening file" << std::endl;
         return 1;
     }
 
-    orderedListType<extPersonType> addressBook;
-
-    getContactInfo(infile, addressBook);
-
-    // getContactInfo(infile, tempPerson);
+    createContactList(infile, addressBook);
     infile.close();
 
-    for (const auto& person : addressBook) {
-        person.print();
+    displayMenu();
+    std::cin >> choice;
+    std::cout << std::endl;
+
+    while (choice != 0) {
+        switch (choice) {
+            case 1:
+                std::cout << "Enter the last name: ";
+                std::cin >> lastName;
+                std::cout << std::endl;
+                if (addressBook.personSearch(lastName)) {
+                    addressBook.printAddressInfo(lastName);
+                }
+                else {
+                    std::cerr << "    No such name." << std::endl;
+                }
+                break;
+            case 2:
+                std::cout << "Enter a number between 1 and 12 to search by month: ";
+                std::cin >> month;
+                std::cout << std::endl;
+                if (addressBook.printBdayByMonth(month)) {
+                    break;
+                }
+                else {
+                    std::cerr << "    No contacts have birthdays in that month." << std::endl;
+                }
+                break;
+            case 3:
+
+            default:
+                std::cout << "    Invalid choice" << std::endl; break;
+        }
+        std::cout << std::endl;
+        displayMenu();
+        std::cin >> choice;
+        std::cout << std::endl;
     }
-    int num = addressBook.length();
-    std::cout << num << std::endl;
-    // tempPerson.print();
+    std::cout << "Goodbye!" << std::endl;
 
-    // Default Class Construction
-    // std::cout << "\nDefault Person\n";
-    // extPersonType person2 = extPersonType();
-    // person2.print();
-
-
-
-    // std::cout << "**********" << std::endl;
-    //
-    // orderedListType<int> list1, list2;
-    // int num;
-    //
-    // std::cout << "Line 7: Enter numbers ending with -999." << std::endl;
-    // std::cin >> num;
-    //
-    // while (num != -999) {
-    //     list1.insert(num);
-    //     std::cin >> num;
+    // for (const auto& person : addressBook) {
+    //     person.print();
     // }
-    //
-    // std::cout << std::endl;
-    // std::cout << "Line 15: list1: ";
-    // list1.print();
-    // std::cout << std::endl;
-    //
-    // list2 = list1;
-    //
-    // std::cout << "Line 19: list2: ";
-    // list2.print();
-    // std::cout << std::endl;
-    //
-    // std::cout << "Line 22: Enter the number to be deleted: ";
-    // std::cin >> num;
-    // std::cout << std::endl;
-    //
-    // list2.deleteNode(num);
-    // std::cout << "Line 26: After deleting " << num << ", list2: " << std::endl;
-    // list2.print();
-    // std::cout << std::endl;
-    //
+    // int num = addressBook.length();
+    // std::cout << num << std::endl;
     return 0;
 }
 
-void getContactInfo(std::ifstream& infile, orderedListType<extPersonType>& addressBook) {
-    std::string fname, lname, street, city, state, email, relationship;
-    int day, month, year, zip, phone;
+void createContactList(std::ifstream& infile, orderedListType<extPersonType>& addressBook) {
+    std::string fname, lname, street, city, state, email, relationship, phone;
+    int day, month, year, zip;
 
     extPersonType tempPerson;
 
-    while (infile) {
-        infile >> fname >> lname >> day >> month >> year;
-
+    while (infile >> fname >> lname >> day >> month >> year) {
         infile.ignore(); // This will ignore the space before a quote
+
         if (infile.peek() == '"') {
-            infile.get();
-            std::getline(infile, street, '"');;
+            infile.get(); // Consume the opening quote
+            std::getline(infile, street, '"'); // Read until the closing quote
+            infile.ignore(); // This will ignore the space after the closing quote if needed.
         }
         else {
             infile >> street;
         }
-        infile >> city >> state >> zip >> relationship >> phone >> email;
 
-        std::cout << "Inserting: " << fname << lname << day << month << year << street;
-        std::cout << city << state << zip << relationship << phone << email;
+        if (!(infile >> city >> state >> zip >> relationship >> phone >> email)) {
+            std::cerr << "Error reading data. Skipping entry.\n";
+            continue; // This will skip the current iteration if the reading failed
+        }
+
+        // // Printing out to help with debugging.
+        // std::cout << "Inserting: " << fname << lname << day << month << year << street;
+        // std::cout << city << state << zip << relationship << phone << email << std::endl;
+
         tempPerson.setPersonInfo(fname, lname, day, month, year, street, city, state,
             zip, relationship, phone, email);
         addressBook.insert(tempPerson);
-        std::cout << tempPerson.getFirstName() << "Inserted" << std::endl;
     }
+}
+
+void displayMenu() {
+    std::cout << "############### Simple Address Book ###############\n";
+    std::cout << "Choose from the options listed below.\n";
+    std::cout << "    1. Search for a contact by last name.\n";
+    std::cout << "    2. Search for contacts by birth month.\n";
+    std::cout << "    3. Search for contact birthdays in date range.\n";
+    std::cout << "Enter the number that corresponds to your choice: ";
 }

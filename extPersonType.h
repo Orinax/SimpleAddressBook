@@ -16,6 +16,20 @@
 
 class extPersonType {
 public:
+    bool operator==(const extPersonType& other) const {
+        return (this->firstName == other.firstName) &&
+            (this->lastName == other.lastName) &&
+                (this->birthDate.getYear() == other.birthDate.getYear()) &&
+                    (this->birthDate.getMonth() == other.birthDate.getMonth()) &&
+                        (this->birthDate.getDay() == other.birthDate.getDay());
+    }
+
+    bool operator>=(const extPersonType& other) const {
+        return (this->lastName >= other.lastName);
+    }
+
+    friend std::ostream& operator<<(std::ostream& osObject, const extPersonType& personObject);
+
     void print() const {
         std::cout << "############### Contact Info ###############" << std::endl;
         std::cout << std::right << std::setw(14) << "Name: " << firstName << " " << lastName << std::endl;
@@ -25,6 +39,17 @@ public:
         birthDate.printDate();
         std::cout << "Relationship: " << getRelationshipString() << std::endl;
         std::cout << std::right << std::setw(14) << "Address: " << address << std::endl;
+    }
+
+    void setPersonInfo(std::string fname, std::string lname, int day, int month, int year,
+        std::string street, std::string city, std::string state, int zip, std::string relationship,
+        int phone, std::string email) {
+        setName(fname, lname);
+        birthDate.setDate(day, month, year);
+        setAddress(street, city, state, zip);
+        setRelationship(relationship);
+        setPhoneNumber(phone);
+        setEmail(email);
     }
 
     void setName(std::string first, std::string last) {
@@ -40,8 +65,23 @@ public:
         return lastName;
     }
 
+    bool checkLastName(std::string last) const {
+        if (lastName == last) {
+            return true;
+        }
+        return false;
+    }
+
+    dateType getBirthDate() const {
+        return birthDate;
+    }
+
     void printBirthDate() const {
         birthDate.printDate();
+    }
+
+    void setAddress(std::string street, std::string city, std::string state, int zip) {
+        address = addressType(street, city, state, zip);
     }
 
     addressType getAddress() const {
@@ -56,7 +96,7 @@ public:
         return telephone;
     }
 
-    void setEmail(const std::string& email) {
+    void setEmail(std::string email) {
         emailAddress = email;
     }
 
@@ -100,8 +140,8 @@ public:
 
     // Default Constructor
     extPersonType() {
-        firstName = "--";
-        lastName = "--";
+        firstName = "";
+        lastName = "";
         birthDate = dateType();
         address = addressType();
         relationshipType = Relationship::Acquaintance;

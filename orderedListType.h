@@ -14,6 +14,16 @@
 template <class Type>
 class orderedListType: public linkedListType<Type> {
 public:
+    // // Function to print
+    // void printA() const {
+    //     nodeType<Type> *current;
+    //     current = this->first;
+    //     while (current != NULL) {
+    //         current->info.print();
+    //         current = current->link;
+    //     }
+    // }
+
     // Function to determine whether searchItem is in the list.
     bool search(const Type& searchItem) const {
         bool found = false;
@@ -37,16 +47,16 @@ public:
     // Function to insert newItem in the list.
     void insert(const Type& newItem) {
         nodeType<Type> *current; // This pointer will travel the list
-        nodeType<Type> *trailCurrent; // This points to just before current
+        nodeType<Type> *trailCurrent = NULL; // This points to just before current
         nodeType<Type> *newNode; // This pointer is used to create a new node
 
-        bool found;
+        bool found = false;
 
         newNode = new nodeType<Type>;
         newNode->info = newItem; // The newItem gets stored in the new node here
         newNode->link = NULL; // Set the link field of the node to be NULL for now
 
-        if (this->first == NULL) {  // Case 1
+        if (this->first == NULL) {  // Case 1, an empty list
             this->first = newNode;
             this->last = newNode;
             this->count++;
@@ -64,16 +74,16 @@ public:
                     current = current->link;
                 }
             }
-            if (current == this->first) {  // Case 2
+            if (current == this->first) {  // Case 2, insert at the beginning
                 newNode->link = this->first;
                 this->first = newNode;
                 this->count++;
             }
-            else {  // Case 3
+            else {  // Case 3, insert in the middle or end
                 trailCurrent->link = newNode;
                 newNode->link = current;
 
-                if (current == NULL) {
+                if (current == NULL) { // For inserting at the end
                     this->last = newNode;
                 }
                 this->count++;

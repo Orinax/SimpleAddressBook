@@ -13,29 +13,43 @@ std::ostream& operator<<(std::ostream& osObject, const addressType& address) {
     return osObject;
 }
 
-bool getContactInfo(std::ifstream& infile, extPersonType& extPerson);
+std::ostream& operator<<(std::ostream& osObject, const extPersonType& personObject) {
+    personObject.print();
+    return osObject;
+}
+
+void getContactInfo(std::ifstream& infile, orderedListType<extPersonType>& addressBook);
 
 
 int main() {
 
     std::ifstream infile("contactData.txt");
+
     if (!infile) {
         std::cerr << "Error opening file" << std::endl;
         return 1;
     }
 
-    extPersonType tempPerson;
-    getContactInfo(infile, tempPerson);
+    orderedListType<extPersonType> addressBook;
+
+    getContactInfo(infile, addressBook);
+
+    // getContactInfo(infile, tempPerson);
     infile.close();
 
-    tempPerson.print();
+    for (const auto& person : addressBook) {
+        person.print();
+    }
+    int num = addressBook.length();
+    std::cout << num << std::endl;
+    // tempPerson.print();
 
     // Default Class Construction
-    std::cout << "\nDefault Person\n";
-    extPersonType person2 = extPersonType();
-    person2.print();
+    // std::cout << "\nDefault Person\n";
+    // extPersonType person2 = extPersonType();
+    // person2.print();
 
-    orderedListType<extPersonType> addressBook;
+
 
     // std::cout << "**********" << std::endl;
     //
@@ -73,26 +87,30 @@ int main() {
     return 0;
 }
 
-bool getContactInfo(std::ifstream& infile, extPersonType& extPerson) {
+void getContactInfo(std::ifstream& infile, orderedListType<extPersonType>& addressBook) {
     std::string fname, lname, street, city, state, email, relationship;
     int day, month, year, zip, phone;
 
-    if (!(infile >> fname >> lname >> day >> month >> year)) {
-        return false;
-    }
+    extPersonType tempPerson;
 
-    infile.ignore(); // This will ignore the space before a quote
-    if (infile.peek() == '"') {
-        infile.get();
-        std::getline(infile, street, '"');;
-    }
-    else {
-        infile >> street;
-    }
+    while (infile) {
+        infile >> fname >> lname >> day >> month >> year;
 
-    infile >> city >> state >> zip >> relationship >> phone >> email;
+        infile.ignore(); // This will ignore the space before a quote
+        if (infile.peek() == '"') {
+            infile.get();
+            std::getline(infile, street, '"');;
+        }
+        else {
+            infile >> street;
+        }
+        infile >> city >> state >> zip >> relationship >> phone >> email;
 
-    extPerson = extPersonType(fname, lname, day, month, year, street, city, state,
-        zip, relationship, phone, email);
-    return true;
+        std::cout << "Inserting: " << fname << lname << day << month << year << street;
+        std::cout << city << state << zip << relationship << phone << email;
+        tempPerson.setPersonInfo(fname, lname, day, month, year, street, city, state,
+            zip, relationship, phone, email);
+        addressBook.insert(tempPerson);
+        std::cout << tempPerson.getFirstName() << "Inserted" << std::endl;
+    }
 }

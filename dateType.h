@@ -11,6 +11,20 @@
 
 class dateType {
 public:
+    bool operator>=(const dateType &other) const {
+        if (this->dYear > other.dYear) return true;
+        if (this->dYear == other.dYear && this->dMonth > other.dMonth) return true;
+        if (this->dYear == other.dYear && this->dMonth == other.dMonth && this->dDay >= other.dDay) return true;
+        return false;
+    }
+
+    bool operator<=(const dateType &other) const {
+        if (this->dYear < other.dYear) return true;
+        if (this->dYear == other.dYear && this->dMonth < other.dMonth) return true;
+        if (this->dYear == other.dYear && this->dMonth == other.dMonth && this->dDay <= other.dDay) return true;
+        return false;
+    }
+
     void setDate(int day, int month, int year) {
         dDay = day;
         dMonth = month;

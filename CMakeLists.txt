@@ -8,4 +8,5 @@ add_executable(SimpleAddressBook main.cpp
         extPersonType.h
         dateType.h
         linkedList.h
-        orderedListType.h)
+        orderedListType.h
+        personListType.h)

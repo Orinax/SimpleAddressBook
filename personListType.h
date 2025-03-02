@@ -54,42 +54,55 @@ public:
     }
 
     // Function to print people who have birthdays between specified dates
-    void printBdayByRange(dateType startDate, dateType endDate) {
+    bool printBdayByRange(dateType startDate, dateType endDate) {
+        bool canPrint = false;
         nodeType<extPersonType> *current;
         current = first;
         while (current != NULL) {
-            std::cout << "The contacts who have birthdays between ";
-            std::cout << startDate.getDay() << "-" << startDate.getMonth() << startDate.getYear() << " and ";
-            std::cout << endDate.getDay() << "-" << endDate.getMonth() << endDate.getYear() << ".";
+            // std::cout << "The contacts who have birthdays between ";
+            // std::cout << startDate.getDay() << "-" << startDate.getMonth() << startDate.getYear() << " and ";
+            // std::cout << endDate.getDay() << "-" << endDate.getMonth() << endDate.getYear() << ".";
             if (current->info.getBirthDate() >= startDate && current->info.getBirthDate() <= endDate) {
-                std::cout << current->info.getFirstName() << " " << current->info.getLastName();
+                std::cout << "    " << current->info.getFirstName() << " " << current->info.getLastName();
                 std::cout << " has a birthday on ";
                 current->info.printBirthDate();
+                canPrint = true;
             }
+            current = current->link;
         }
+        return canPrint;
     }
 
     // Function to print people based on their relationships
-    void relationshipPrint(std::string relationship) {
+    bool relationshipPrint(const std::string &relationship) {
+        bool canPrint = false;
         nodeType<extPersonType> *current;
         current = first;
+        std::cout << std::endl;
         while (current != NULL) {
-            std::cout << "The contacts with relationship status [" << relationship << "]" << "are:" << std::endl;
             if (current->info.getRelationshipString() == relationship) {
-                std::cout << current->info.getFirstName() << " " << current->info.getLastName();
+                std::cout << "    " << relationship << ": ";
+                std::cout << current->info.getFirstName() << " " << current->info.getLastName() << "\n";
+                canPrint = true;
             }
+            current = current->link;
         }
+        return canPrint;
     }
 
     // Function to print names of all people between two last names
-    void printLastNameByRange(std::string lastNameA, std::string lastNameB) {
+    bool printLastNameByRange(std::string lastNameA, std::string lastNameB) {
+        bool canPrint = false;
         nodeType<extPersonType> *current;
         current = first;
         while (current != NULL) {
             if (current->info.getLastName() >= lastNameA && current->info.getLastName() <= lastNameB) {
-                std::cout << current->info.getFirstName() << " " << current->info.getLastName();
+                std::cout << "    " << current->info.getFirstName() << " " << current->info.getLastName() << "\n";
+                canPrint = true;
             }
+            current = current->link;
         }
+        return canPrint;
     }
 
 private:

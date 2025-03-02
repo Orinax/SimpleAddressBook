@@ -20,7 +20,7 @@ std::ostream& operator<<(std::ostream& osObject, const extPersonType& personObje
 }
 
 void createContactList(std::ifstream& infile, orderedListType<extPersonType>& addressBook);
-
+void saveContactListToFile(const std::string& filename, const orderedListType<extPersonType>& addressBook);
 void displayMainMenu();
 void displayRelationshipMenu();
 
@@ -40,6 +40,8 @@ int main() {
     bool valid = false;
 
     std::ifstream infile("contactData.txt");
+    const std::string outfile("contactData.txt");
+
     if (!infile) {
         std::cerr << "Error opening file" << std::endl;
         return 1;
@@ -121,7 +123,7 @@ int main() {
                 std::cin >> firstName;
                 std::cout << "Enter the new contact's last name: ";
                 std::cin >> lastNameA;
-                std::cout << "Enter the new contact's birthday (d m yyy): ";
+                std::cout << "Enter the new contact's birthday (d m yyyy): ";
                 std::cin >> day >> month >> year;
                 std::cin.ignore();
                 std::cout << "Enter the new contact's street address: ";
@@ -161,6 +163,8 @@ int main() {
                     break;
                 }
                 std::cout << "\n    No such contact found." << std::endl; break;
+            case 8:
+                saveContactListToFile(outfile, addressBook); break;
             default:
                 std::cout << "    Invalid choice" << std::endl; break;
         }
@@ -212,6 +216,29 @@ void createContactList(std::ifstream& infile, orderedListType<extPersonType>& ad
     }
 }
 
+void saveContactListToFile(const std::string& filename, const orderedListType<extPersonType>& addressBook) {
+    std::ofstream outfile(filename);
+
+    if (!outfile) {
+        std::cerr << "Error opening file.\n";
+        return;
+    }
+    nodeType<extPersonType> *current = addressBook.getFirst();
+    while (current != NULL) {
+        extPersonType tempPerson = current->info;
+        outfile << tempPerson.getFirstName() << " " << tempPerson.getLastName() << " "
+        << tempPerson.getBirthDate().getDay() << " " << tempPerson.getBirthDate().getMonth() << " "
+        << tempPerson.getBirthDate().getYear() << " \"" << tempPerson.getAddress().getStreetAddress() << "\" "
+        << tempPerson.getAddress().getCity() << " " << tempPerson.getAddress().getState() << " "
+        << tempPerson.getAddress().getZipCode() << " " << tempPerson.getRelationshipString() << " "
+        << tempPerson.getPhoneNumber() << " " << tempPerson.getEmail() << " \n";
+
+        current = current->link;
+    }
+    outfile.close();
+    std::cout << "    List saved to " << filename << std::endl;
+}
+
 void displayMainMenu() {
     std::cout << "############### Simple Address Book ###############\n";
     std::cout << "Choose from the options listed below.\n";
@@ -222,6 +249,7 @@ void displayMainMenu() {
     std::cout << "    5. Search for contacts between two last names.\n";
     std::cout << "    6. Add a new contact.\n";
     std::cout << "    7. Delete a contact.\n";
+    std::cout << "    8. Save.\n";
     std::cout << "Enter the number that corresponds to your choice: ";
 }
 

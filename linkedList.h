@@ -114,6 +114,11 @@ public:
         return first->info;
     }
 
+    // Function to return the first node of the list.
+    nodeType<Type> *getFirst() const {
+        return first;
+    }
+
     // Function to return the last element of the list.
     Type back() const {
         assert(last != NULL);

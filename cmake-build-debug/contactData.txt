@@ -1,5 +1,4 @@
-James Kirk 22 3 2228 "58 Star St." Riverside Iowa 43251 Friend 145-756-1432 kirk@enterprise.com
-Bob Brass 11 2 1991 "22 Quill Court" Backhills Montana 18223 Business_Associate 890-484-1234 bob@work.com
-Lucy Liu 3 3 1985 "33 Hills" Hollywood California 89352 Acquaintance 183-456-2345 lucy@star.com
-Andy Anderson 5 5 2005 "Rockstar Lane" LosAngeles California 90210 Acquaintance 999-867-1456 andy@super.com
-Clark Cobalt 12 3 1988 "5th Street" Nowhere Ohio 89345 Academic_Associate 128-988-0101 clark@another.com
+Andy Anderson 5 5 2005 "Rockstar Lane" LosAngeles California 90210 Acquaintance 999-867-1456 andy@super.com 
+Clark Cobalt 12 3 1988 "5th Street" Nowhere Ohio 89345 Academic_Associate 128-988-0101 clark@another.com 
+James Kirk 22 3 2228 "58 Star St." Riverside Iowa 43251 Friend 145-756-1432 kirk@enterprise.com 
+Lucy Liu 3 3 1985 "33 Hills" Hollywood California 89352 Acquaintance 183-456-2345 lucy@star.com 

@@ -17,16 +17,31 @@ public:
         this->streetAddress = streetAddress;
     }
 
+    std::string getStreetAddress() {
+        return streetAddress;
+    }
     void setCity(std::string city) {
         this->city = city;
+    }
+
+    std::string getCity() {
+        return city;
     }
 
     void setState(std::string state) {
         this->state = state;
     }
 
+    std::string getState() {
+        return state;
+    }
+
     void setZipCode(int zipCode) {
         this->zipCode = zipCode;
+    }
+
+    int getZipCode() {
+        return zipCode;
     }
 
     friend std::ostream& operator<<(std::ostream&, const addressType&);

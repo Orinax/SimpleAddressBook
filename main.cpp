@@ -27,14 +27,17 @@ void displayRelationshipMenu();
 // Begin main program
 int main() {
     personListType addressBook;
-    int choice, day, month, year;
-    std::string lastNameA, lastNameB;
+    extPersonType newContact;
+    int choice, day, month, year, zip;
+    std::string firstName, lastNameA, lastNameB;
+    std::string street, city, state, relationship, phone, email;
     std::string reFamily = "Family_Member";
     std::string reFriend = "Friend";
     std::string reBusiness = "Business_Associate";
     std::string reAcademic = "Academic_Associate";
     std::string reAcquaintance = "Acquaintance";
     dateType dateA, dateB;
+    bool valid = false;
 
     std::ifstream infile("contactData.txt");
     if (!infile) {
@@ -111,7 +114,53 @@ int main() {
                 if (addressBook.printLastNameByRange(lastNameA, lastNameB)) {
                     break;
                 }
-                std::cout << "\n    No contacts found." << std::endl; break;
+                std::cout << "\n    No contacts found." << std::endl;
+                break;
+            case 6:
+                std::cout << "Enter the new contact's first name: ";
+                std::cin >> firstName;
+                std::cout << "Enter the new contact's last name: ";
+                std::cin >> lastNameA;
+                std::cout << "Enter the new contact's birthday (d m yyy): ";
+                std::cin >> day >> month >> year;
+                std::cin.ignore();
+                std::cout << "Enter the new contact's street address: ";
+                std::getline(std::cin, street);
+                std::cout << "Enter the new contact's city: ";
+                std::cin >> city;
+                std::cout << "Enter the new contact's state: ";
+                std::cin >> state;
+                std::cout << "Enter the new contact's zip code: ";
+                std::cin >> zip;
+                std::cout << "Please choose a relationship type for the new contact: \n";
+                while (valid == false) {
+                    displayRelationshipMenu();
+                    std::cin >> choice;
+                    switch (choice) {
+                        case 1: relationship = reFamily; valid = true; break;
+                        case 2: relationship = reFriend; valid = true; break;
+                        case 3: relationship = reBusiness; valid = true; break;
+                        case 4: relationship = reAcademic; valid = true; break;
+                        case 5: relationship = reAcquaintance; valid = true; break;
+                        default: std::cerr << "\n    Invalid choice." << std::endl; break;
+                    }
+                }
+                std::cout << "Please enter the new contact's phone number: ";
+                std::cin >> phone;
+                std::cout << "Please enter the new contact's email address: ";
+                std::cin >> email;
+                newContact.setPersonInfo(firstName, lastNameA, day, month, year,
+                    street, city, state, zip, relationship, phone, email);
+                addressBook.insert(newContact);
+                std::cout << "\n    New contact created for " << firstName << " " << lastNameA << std::endl;
+                break;
+            case 7:
+                std::cout << "Please enter the first and last name of the contact to delete: ";
+                std::cin >> firstName >> lastNameA;
+                if (addressBook.personRemove(firstName, lastNameA)) {
+                    break;
+                }
+                std::cout << "\n    No such contact found." << std::endl; break;
             default:
                 std::cout << "    Invalid choice" << std::endl; break;
         }
@@ -120,7 +169,7 @@ int main() {
         std::cin >> choice;
         std::cout << std::endl;
     }
-    std::cout << "    Goodbye!" << std::endl;
+    std::cout << "    Goodbye!\n" << std::endl;
 
     // for (const auto& person : addressBook) {
     //     person.print();
@@ -171,6 +220,8 @@ void displayMainMenu() {
     std::cout << "    3. Search for contact birthdays in date range.\n";
     std::cout << "    4. Search for contacts based on relationship.\n";
     std::cout << "    5. Search for contacts between two last names.\n";
+    std::cout << "    6. Add a new contact.\n";
+    std::cout << "    7. Delete a contact.\n";
     std::cout << "Enter the number that corresponds to your choice: ";
 }
 

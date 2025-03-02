@@ -19,9 +19,24 @@ public:
         return found;
     }
 
-    // // Function to remove a person from the list
-    // void personRemove(extPersonType person);
-    //
+    // Function to remove a person from the list
+    bool personRemove(std::string firstName, std::string lastName) {
+        bool canRemove = false;
+        nodeType<extPersonType> *current;
+        current = first;
+        while (current != NULL) {
+            if (current->info.getFirstName() == firstName &&
+                current->info.getLastName() == lastName) {
+                deleteNode(current->info);
+                std::cout << "\n    " << firstName << " " << lastName;
+                std::cout << " deleted from address book." << std::endl;
+                canRemove = true;
+            }
+            current = current->link;
+        }
+        return canRemove;
+    }
+
     // // Function to add a person to the list
     // void personAdd(extPersonType person);
 

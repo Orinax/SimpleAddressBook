@@ -170,7 +170,7 @@ public:
     // Constructor with parameters
     extPersonType(std::string first, std::string last, int day, int month, int year,
         std::string street, std::string city, std::string state, int zip, std::string relationship,
-        int phone, std::string email) {
+        std::string phone, std::string email) {
         firstName = first;
         lastName = last;
         birthDate.setDate(day, month, year);

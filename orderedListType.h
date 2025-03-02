@@ -14,16 +14,6 @@
 template <class Type>
 class orderedListType: public linkedListType<Type> {
 public:
-    // // Function to print
-    // void printA() const {
-    //     nodeType<Type> *current;
-    //     current = this->first;
-    //     while (current != NULL) {
-    //         current->info.print();
-    //         current = current->link;
-    //     }
-    // }
-
     // Function to determine whether searchItem is in the list.
     bool search(const Type& searchItem) const {
         bool found = false;
